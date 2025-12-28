@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
-import './Settings.css';
+import { 
+  BellIcon, 
+  ShieldCheckIcon, 
+  GlobeAltIcon,
+  KeyIcon,
+  TrashIcon
+} from '@heroicons/react/24/outline';
 
 const Settings = () => {
   const [notifications, setNotifications] = useState(true);
@@ -41,220 +47,228 @@ const Settings = () => {
     }
   };
 
-  return (
-    <div>
-      <Navbar />
-      <div className="settings-container">
-        <h1>Settings</h1>
+  const ToggleSwitch = ({ checked, onChange, label, description }) => (
+    <div className="flex items-center justify-between py-4">
+      <div className="flex-1">
+        <p className="text-sm font-medium text-gray-900">{label}</p>
+        {description && <p className="text-sm text-gray-500 mt-1">{description}</p>}
+      </div>
+      <button
+        onClick={() => onChange(!checked)}
+        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
+          checked ? 'bg-primary-600' : 'bg-gray-200'
+        }`}
+      >
+        <span
+          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
+            checked ? 'translate-x-6' : 'translate-x-1'
+          }`}
+        />
+      </button>
+    </div>
+  );
 
-        <div className="settings-layout">
-          <div className="settings-sidebar">
-            <div className="settings-menu">
-              <button className="menu-item active">General</button>
-              <button className="menu-item">Notifications</button>
-              <button className="menu-item">Security</button>
-              <button className="menu-item">Preferences</button>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <Navbar />
+      
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Page Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 font-heading">Settings</h1>
+          <p className="mt-2 text-gray-600">Manage your account preferences and application settings</p>
+        </div>
+
+        <div className="space-y-6">
+          {/* Notifications Section */}
+          <div className="bg-white rounded-2xl shadow-md p-6">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                <BellIcon className="w-6 h-6 text-blue-600" />
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900">Notifications</h3>
+                <p className="text-sm text-gray-600">Manage how you receive notifications</p>
+              </div>
+            </div>
+
+            <div className="space-y-1 divide-y divide-gray-200">
+              <ToggleSwitch
+                checked={notifications}
+                onChange={setNotifications}
+                label="Push Notifications"
+                description="Receive push notifications on your devices"
+              />
+              <ToggleSwitch
+                checked={emailNotifications}
+                onChange={setEmailNotifications}
+                label="Email Notifications"
+                description="Get notified via email about orders and updates"
+              />
+              <ToggleSwitch
+                checked={smsNotifications}
+                onChange={setSmsNotifications}
+                label="SMS Notifications"
+                description="Receive text messages for important updates"
+              />
+              <ToggleSwitch
+                checked={promotions}
+                onChange={setPromotions}
+                label="Promotional Emails"
+                description="Receive emails about sales and special offers"
+              />
+              <ToggleSwitch
+                checked={newsletter}
+                onChange={setNewsletter}
+                label="Newsletter"
+                description="Subscribe to our weekly newsletter"
+              />
             </div>
           </div>
 
-          <div className="settings-main">
-            <div className="settings-section">
-              <h2>General Settings</h2>
-              <div className="settings-group">
-                <div className="setting-item">
-                  <div className="setting-info">
-                    <label>Enable Notifications</label>
-                    <p className="setting-description">Receive notifications about your orders and updates</p>
-                  </div>
-                  <label className="toggle-switch">
-                    <input
-                      type="checkbox"
-                      checked={notifications}
-                      onChange={(e) => setNotifications(e.target.checked)}
-                    />
-                    <span className="toggle-slider"></span>
-                  </label>
-                </div>
-
-                <div className="setting-item">
-                  <div className="setting-info">
-                    <label>Subscribe to Newsletter</label>
-                    <p className="setting-description">Get the latest news, updates, and special offers</p>
-                  </div>
-                  <label className="toggle-switch">
-                    <input
-                      type="checkbox"
-                      checked={newsletter}
-                      onChange={(e) => setNewsletter(e.target.checked)}
-                    />
-                    <span className="toggle-slider"></span>
-                  </label>
-                </div>
-
-                <div className="setting-item">
-                  <div className="setting-info">
-                    <label>Dark Mode</label>
-                    <p className="setting-description">Switch to dark theme for better viewing at night</p>
-                  </div>
-                  <label className="toggle-switch">
-                    <input
-                      type="checkbox"
-                      checked={darkMode}
-                      onChange={(e) => setDarkMode(e.target.checked)}
-                    />
-                    <span className="toggle-slider"></span>
-                  </label>
-                </div>
+          {/* Privacy & Security Section */}
+          <div className="bg-white rounded-2xl shadow-md p-6">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                <ShieldCheckIcon className="w-6 h-6 text-green-600" />
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900">Privacy & Security</h3>
+                <p className="text-sm text-gray-600">Control your account security settings</p>
               </div>
             </div>
 
-            <div className="settings-section">
-              <h2>Notification Preferences</h2>
-              <div className="settings-group">
-                <div className="setting-item">
-                  <div className="setting-info">
-                    <label>Email Notifications</label>
-                    <p className="setting-description">Receive order updates and promotions via email</p>
-                  </div>
-                  <label className="toggle-switch">
-                    <input
-                      type="checkbox"
-                      checked={emailNotifications}
-                      onChange={(e) => setEmailNotifications(e.target.checked)}
-                    />
-                    <span className="toggle-slider"></span>
-                  </label>
-                </div>
+            <div className="space-y-4">
+              <ToggleSwitch
+                checked={twoFactor}
+                onChange={setTwoFactor}
+                label="Two-Factor Authentication"
+                description="Add an extra layer of security to your account"
+              />
 
-                <div className="setting-item">
-                  <div className="setting-info">
-                    <label>SMS Notifications</label>
-                    <p className="setting-description">Get order updates via text message</p>
+              <div className="pt-4">
+                <button
+                  onClick={handleChangePassword}
+                  className="flex items-center gap-3 w-full p-4 text-left border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-all duration-200"
+                >
+                  <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <KeyIcon className="w-5 h-5 text-purple-600" />
                   </div>
-                  <label className="toggle-switch">
-                    <input
-                      type="checkbox"
-                      checked={smsNotifications}
-                      onChange={(e) => setSmsNotifications(e.target.checked)}
-                    />
-                    <span className="toggle-slider"></span>
-                  </label>
-                </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">Change Password</p>
+                    <p className="text-sm text-gray-500">Update your account password</p>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
 
-                <div className="setting-item">
-                  <div className="setting-info">
-                    <label>Promotional Offers</label>
-                    <p className="setting-description">Receive exclusive deals and discounts</p>
-                  </div>
-                  <label className="toggle-switch">
-                    <input
-                      type="checkbox"
-                      checked={promotions}
-                      onChange={(e) => setPromotions(e.target.checked)}
-                    />
-                    <span className="toggle-slider"></span>
-                  </label>
-                </div>
+          {/* Preferences Section */}
+          <div className="bg-white rounded-2xl shadow-md p-6">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                <GlobeAltIcon className="w-6 h-6 text-purple-600" />
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900">Preferences</h3>
+                <p className="text-sm text-gray-600">Customize your experience</p>
               </div>
             </div>
 
-            <div className="settings-section">
-              <h2>Security Settings</h2>
-              <div className="settings-group">
-                <div className="setting-item">
-                  <div className="setting-info">
-                    <label>Two-Factor Authentication</label>
-                    <p className="setting-description">Add an extra layer of security to your account</p>
-                  </div>
-                  <label className="toggle-switch">
-                    <input
-                      type="checkbox"
-                      checked={twoFactor}
-                      onChange={(e) => setTwoFactor(e.target.checked)}
-                    />
-                    <span className="toggle-slider"></span>
-                  </label>
-                </div>
+            <div className="space-y-6">
+              <ToggleSwitch
+                checked={darkMode}
+                onChange={setDarkMode}
+                label="Dark Mode"
+                description="Switch to dark theme (coming soon)"
+              />
 
-                <div className="setting-item">
-                  <div className="setting-info">
-                    <label>Change Password</label>
-                    <p className="setting-description">Update your account password</p>
-                  </div>
-                  <button onClick={handleChangePassword} className="secondary-btn">
-                    Change
-                  </button>
-                </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Language</label>
+                <select
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                >
+                  <option>English</option>
+                  <option>Spanish</option>
+                  <option>French</option>
+                  <option>German</option>
+                  <option>Chinese</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Currency</label>
+                <select
+                  value={currency}
+                  onChange={(e) => setCurrency(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                >
+                  <option value="USD">USD - US Dollar</option>
+                  <option value="EUR">EUR - Euro</option>
+                  <option value="GBP">GBP - British Pound</option>
+                  <option value="JPY">JPY - Japanese Yen</option>
+                  <option value="CAD">CAD - Canadian Dollar</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Time Zone</label>
+                <select
+                  value={timeZone}
+                  onChange={(e) => setTimeZone(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                >
+                  <option value="America/New_York">Eastern Time (ET)</option>
+                  <option value="America/Chicago">Central Time (CT)</option>
+                  <option value="America/Denver">Mountain Time (MT)</option>
+                  <option value="America/Los_Angeles">Pacific Time (PT)</option>
+                  <option value="Europe/London">London (GMT)</option>
+                  <option value="Europe/Paris">Paris (CET)</option>
+                  <option value="Asia/Tokyo">Tokyo (JST)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Danger Zone Section */}
+          <div className="bg-white rounded-2xl shadow-md p-6 border-2 border-red-200">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                <TrashIcon className="w-6 h-6 text-red-600" />
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-red-900">Danger Zone</h3>
+                <p className="text-sm text-red-600">Irreversible actions</p>
               </div>
             </div>
 
-            <div className="settings-section">
-              <h2>Preferences</h2>
-              <div className="settings-group">
-                <div className="setting-item">
-                  <div className="setting-info">
-                    <label>Language</label>
-                    <p className="setting-description">Select your preferred language</p>
-                  </div>
-                  <select value={language} onChange={(e) => setLanguage(e.target.value)} className="setting-select">
-                    <option value="English">English</option>
-                    <option value="Spanish">Spanish</option>
-                    <option value="French">French</option>
-                    <option value="German">German</option>
-                  </select>
-                </div>
+            <button
+              onClick={handleDeleteAccount}
+              className="w-full px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 font-medium"
+            >
+              Delete Account
+            </button>
+            <p className="mt-2 text-sm text-gray-600 text-center">
+              This action cannot be undone. All your data will be permanently deleted.
+            </p>
+          </div>
 
-                <div className="setting-item">
-                  <div className="setting-info">
-                    <label>Currency</label>
-                    <p className="setting-description">Choose your preferred currency</p>
-                  </div>
-                  <select value={currency} onChange={(e) => setCurrency(e.target.value)} className="setting-select">
-                    <option value="USD">USD - US Dollar</option>
-                    <option value="EUR">EUR - Euro</option>
-                    <option value="GBP">GBP - British Pound</option>
-                    <option value="JPY">JPY - Japanese Yen</option>
-                  </select>
-                </div>
-
-                <div className="setting-item">
-                  <div className="setting-info">
-                    <label>Time Zone</label>
-                    <p className="setting-description">Set your local time zone</p>
-                  </div>
-                  <select value={timeZone} onChange={(e) => setTimeZone(e.target.value)} className="setting-select">
-                    <option value="America/New_York">Eastern Time (US & Canada)</option>
-                    <option value="America/Chicago">Central Time (US & Canada)</option>
-                    <option value="America/Denver">Mountain Time (US & Canada)</option>
-                    <option value="America/Los_Angeles">Pacific Time (US & Canada)</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div className="settings-section danger-zone">
-              <h2>Danger Zone</h2>
-              <div className="settings-group">
-                <div className="setting-item">
-                  <div className="setting-info">
-                    <label>Delete Account</label>
-                    <p className="setting-description">Permanently delete your account and all data</p>
-                  </div>
-                  <button onClick={handleDeleteAccount} className="danger-btn">
-                    Delete Account
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="settings-actions">
-              <button onClick={handleSaveSettings} className="save-btn">
-                Save All Settings
-              </button>
-              <button onClick={handleResetSettings} className="reset-btn">
-                Reset to Default
-              </button>
-            </div>
+          {/* Action Buttons */}
+          <div className="flex gap-4">
+            <button
+              onClick={handleSaveSettings}
+              className="flex-1 px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 font-medium"
+            >
+              Save Changes
+            </button>
+            <button
+              onClick={handleResetSettings}
+              className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200 font-medium"
+            >
+              Reset to Default
+            </button>
           </div>
         </div>
       </div>
